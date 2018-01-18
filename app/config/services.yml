@@ -1,0 +1,33 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/service_container.html
+parameters:
+#    parameter_name: value
+
+services:
+    aws_credentials_service:
+        class: Aws\Credentials\Credentials
+        arguments:
+            - %aws_key%
+            - %aws_secret%
+    app.url.maker:
+        class: AppBundle\Service\UrlMaker
+        arguments: ["@doctrine.orm.entity_manager","@service_container"]
+    app.url.tester:
+        class: AppBundle\Service\UrlTester
+        arguments: ["@service_container"]
+    app.instances.retriver:
+        class: AppBundle\Service\InstancesRetriver
+        arguments: ["@doctrine.orm.entity_manager","@service_container"]
+    app.service.tester:
+        class: AppBundle\Service\ServicesTester
+        arguments: ["@doctrine.orm.entity_manager","@service_container", "@app.url.tester", "@app.service.notifyer"]
+    app.service.invoice:
+        class: AppBundle\Service\InvoiceService
+        arguments: ["@doctrine.orm.entity_manager","@service_container", "@app.url.tester", "@app.service.notifyer"]
+    app.mailer:
+        class: AppBundle\Service\Mailer
+        arguments: ["@service_container"]
+    app.service.notifyer:
+        class: AppBundle\Service\ServicesNotifyer
+        arguments: ["@doctrine.orm.entity_manager", "@aws.sns","@service_container", "@app.mailer"]
+ 

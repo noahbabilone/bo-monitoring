@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>{% block title %} Management Freebox{% endblock %}</title>
+    <link rel="icon" type="image/png" href="{{ asset('assets/images/favicon/favicon-96x96.png') }}" sizes="96x96">
+    {% block stylesheets %}
+        {#<!-- BEGIN GLOBAL MANDATORY STYLES -->#}
+        {% stylesheets
+        'assets/font-awesome-4.7.0/css/font-awesome.min.css'
+        'assets/bootstrap-3.3.7-dist/css/bootstrap.min.css'
+        'bundles/app/css/styles.css'
+        filter='cssrewrite' %}
+        {#<!-- END GLOBAL MANDATORY STYLES -->#}
+        <link rel="stylesheet" href="{{ asset_url }}"/>
+        {% endstylesheets %}
+
+    {% endblock %}
+</head>
+<body>
+{% if app.user is defined and app.user %}
+    <nav class="aws_navbar navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="logo" href="{{ path('homepage') }}"><img class="logo-header"
+                                                                   src="{{ asset('assets/images/logo/mngfreebox-test.png') }}"
+                                                                   alt=""></a>
+                {#<a class="h2_header" href="{{ path('homepage') }}">Management Freebox</a>#}
+            </div>
+            <ul class="nav navbar-nav">
+                {#{% set routeName = app.request.get('_route') %}#}
+                <li {% if app.request.requestUri == path('homepage') %}
+                    class="active" {% endif %}>
+                    <a href="{{ path('homepage') }}">Instances</a></li>
+
+                <li><a href="http://databases.freebox.42cloud.io/" target="_blank" title="Base de donnée">
+                        PHPMyAdmin</a></li>
+                <li>
+                    <a href="https://www.sslforfree.com/" target="_blank" title="Base de donnée">
+                        Renewing SSL</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">Monitoring <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+
+                        <li><a href="http://munin.freebox.42cloud.io/" target="_blank" title="">
+                                {#<i class="fa fa-bar-chart fa-fw"></i>#}Munin</a></li>
+                        <li><a href="https://metrics.librato.com/s/spaces" target="_blank" title="">
+                                {#<i class="fa fa-area-chart fa-fw"></i>#}Librato</a></li>
+                        <li><a href="http://redmine.42cloud.io" target="_blank" title="">
+                                {#<i class="fa fa-ticket fa-fw"></i>#}Redmine</a></li>
+                    </ul>
+
+                </li>
+
+                <li {% if app.request.requestUri == path('doc_page') or  app.request.requestUri == path('procedure_remote_access') %}
+                    class="active dropdown"
+                {% else %}
+                    class="dropdown" {% endif %}>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">Docs <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li {% if app.request.requestUri == path('doc_page') %}
+                            class="active" {% endif %}>
+                            <a href="{{ path('doc_page') }}">Doc Support</a></li>
+
+                        <li {% if app.request.requestUri == path('procedure_remote_access') %}
+                            class="active" {% endif %}>
+                            <a href="{{ path('procedure_remote_access') }}">Procedure Accès Diastant</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                {#<li>
+                    <a id="aws_refresh"
+                       href="{{ path('app_invoice') }}" class="">
+                        <i class="fa fa-refresh fa-fw"></i> #}{#fa-spin#}{#
+                        Crontab</a>
+                </li>#}
+                <li  {% if app.request.requestUri == path('app_cron_tab') %}
+                    class="active" {% endif %}>
+                    <a id="aws_refresh"
+                       href="{{ path('app_cron_tab') }}" class="">
+                        <i class="fa fa-code fa-fw"></i> {#fa-spin#}
+                        Crontab</a>
+                </li>
+                <li  {% if app.request.requestUri == path('app_invoice') %}
+                    class="active" {% endif %}>
+                    <a id="aws_refresh"
+                       href="{{ path('app_invoice') }}" class="">
+                        <i class="fa fa-files-o fa-fw"></i> {#fa-spin#}
+                        Factures</a>
+                </li>
+                <li {% if app.request.requestUri == path('link_list') %} class="active" {% endif %}>
+                    <a id="aws_refresh" href="{{ path('link_list') }}" class="active"><i class="fa fa-link fa-fw"></i>
+                        URL</a>
+                </li>
+
+                <li {% if app.request.requestUri == path('log_file') %} class="active" {% endif %}>
+                    <a id="aws_logs" class="spec-button"
+                       href="{{ path('log_file') }}"
+                       title="Log"> <i class="fa fa-terminal"></i> Log </a>
+                </li>
+                <li>
+                    <a class="spec-button"
+                       href="{{ path('fos_user_security_logout') }}"
+                       title="Déconnexion"> <i class="fa fa-power-off"></i> </a>
+                </li>
+
+            </ul>
+        </div>
+    </nav>
+    <div style="margin-top:60px;"></div>
+{% endif %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+
+        </div>
+    </div>
+    {% block body %}{% endblock %}
+    {% if app.user is defined and app.user %}
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+        <div class="row">
+            <div class="col-lg-12">
+                <p>Copyright &copy; 42Consulting - {{ "now"|date("Y") }} </p>
+            </div>
+        </div>
+        <!-- /.row -->
+    </footer>
+
+</div>
+{% endif %}
+
+{% block javascripts %}
+    {% javascripts
+    "assets/jquery/jquery-3.2.0.min.js"
+    "assets/bootstrap-3.3.7-dist/js/bootstrap.min.js"
+    'bundles/fosjsrouting/js/router.js' %}
+    <script src="{{ asset_url }}" type="text/javascript"></script>
+    {% endjavascripts %}
+    <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,112 @@
+{#
+/**
+ * @file
+ * Twitter Bootstrap v3 Sliding pagination control implementation.
+ *
+ * View that can be used with the pagination module
+ * from the Twitter Bootstrap CSS Toolkit
+ * http://getbootstrap.com/components/#pagination
+ *
+ * @author Pablo Díez <pablodip@gmail.com>
+ * @author Jan Sorgalla <jsorgalla@gmail.com>
+ * @author Artem Ponomarenko <imenem@inbox.ru>
+ * @author Artem Zabelin <artjomzabelin@gmail.com>
+ */
+#}
+
+{% if pageCount > 1 %}
+    <ul class="pager">
+
+        {% if previous is defined %}
+            <li class="previous">
+                <a rel="prev" href="{{ path(route, query|merge({(pageParameterName): previous})) }}"> ← Précedente</a>
+            </li>
+        {% else %}
+            <li class="previous disabled">
+                <span>← Précedente</span>
+            </li>
+        {% endif %}
+
+        {% if startPage > 1 %}
+            <li>
+                <a href="{{ path(route, query|merge({(pageParameterName): 1})) }}">1</a>
+            </li>
+            {% if startPage == 3 %}
+                <li>
+                    <a href="{{ path(route, query|merge({(pageParameterName): 2})) }}">2</a>
+                </li>
+            {% elseif startPage != 2 %}
+                <li class="disabled">
+                    <span>&hellip;</span>
+                </li>
+            {% endif %}
+        {% endif %}
+
+        {% for page in pagesInRange %}
+            {% if page != current %}
+                <li>
+                    <a href="{{ path(route, query|merge({(pageParameterName): page})) }}">{{ page }}</a>
+                </li>
+            {% else %}
+                <li class="active bg-font-green">
+                    <span>{{ page }}</span>
+                </li>
+            {% endif %}
+
+        {% endfor %}
+
+        {% if pageCount > endPage %}
+            {% if pageCount > (endPage + 1) %}
+                {% if pageCount > (endPage + 2) %}
+                    <li class="disabled">
+                        <span>&hellip;</span>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="{{ path(route, query|merge({(pageParameterName): (pageCount - 1)})) }}">{{ pageCount -1 }}</a>
+                    </li>
+                {% endif %}
+            {% endif %}
+            <li>
+                <a href="{{ path(route, query|merge({(pageParameterName): pageCount})) }}">{{ pageCount }}</a>
+            </li>
+
+            
+        {% endif %}
+        
+        <li class="form-inline" style="margin-left: 20px;">
+                    <input class="form-control input-sm" id="input_knp_go_to_page" name="page" placeholder="Page" type="text"
+                           autocomplete="off"
+                           data-max-page="{{ pageCount }}"
+                           data-url="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')  |merge(app.request.query.all) | merge({'page': '__page__' })) }}">
+                   <button id="btn-go-to-page" onclick="kpnGoToPage()"
+                                                          class="btn btn-sm green"
+                                                          type="button"><i class="f"></i>Go</button>
+            </li>
+
+        {% if next is defined %}
+            <li class="next">
+                <a rel="next" href="{{ path(route, query|merge({(pageParameterName): next})) }}"> Suivante → </a>
+            </li>
+        {% else %}
+            <li class="next disabled">
+                <span> Suivante → </span>
+            </li>
+        {% endif %}
+    </ul>
+{% endif %}
+
+<script>
+    function kpnGoToPage() {
+        var page = parseInt(document.getElementById("input_knp_go_to_page").value.trim()) || 0;
+        var url = document.getElementById("input_knp_go_to_page").getAttribute("data-url");
+        var maxPage = parseInt(document.getElementById("input_knp_go_to_page").getAttribute("data-max-page")) || 1;
+        if (page > 0 && page <= maxPage && url != null) {
+            location.href = url.replace(/__page__/, ""+page);
+        }else{
+            document.getElementById("btn-go-to-page").classList.remove("green")
+            document.getElementById("btn-go-to-page").classList.add("btn-danger")
+            document.getElementById("btn-go-to-page").innerHTML= '<i class="fa fa-warning"></i> Go';
+        }
+    }
+</script>

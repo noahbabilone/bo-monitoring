@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Instances list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Slug</th>
+                <th>Createdate</th>
+                <th>Updatedate</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for instance in instances %}
+            <tr>
+                <td><a href="{{ path('instance_show', { 'id': instance.id }) }}">{{ instance.id }}</a></td>
+                <td>{{ instance.name }}</td>
+                <td>{{ instance.slug }}</td>
+                <td>{% if instance.createDate %}{{ instance.createDate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if instance.updateDate %}{{ instance.updateDate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('instance_show', { 'id': instance.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('instance_edit', { 'id': instance.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('instance_new') }}">Create a new instance</a>
+        </li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,32 @@
+preprod;hotvideo.backoffice.preprod.42cloud.io;/api/catalogs;HOTVIDEO PREPROD API HOME
+preprod;hotvideo.backoffice.preprod.42cloud.io;/api/banners/catalog/1;HOTVIDEO PREPROD API HOME catalogue TVOD
+preprod;hotvideo.backoffice.preprod.42cloud.io;/api/videos_rubrics/rubric=1/catalog=1;HOTVIDEO PREPROD API liste video dans la rubrique 1 catalogue tvod
+preprod;hotvideo.backoffice.preprod.42cloud.io;/api/videos/id=2;HOTVIDEO PREPROD API Video details
+preprod;pink.backoffice.preprod.42cloud.io;/api/catalogs;PINK PREPROD API HOME
+preprod;pink.backoffice.preprod.42cloud.io;/api/banners/catalog/1;PINK PREPROD API HOME catalogue TVOD
+preprod;pink.backoffice.preprod.42cloud.io;/api/videos_rubrics/rubric=1/catalog=1;PINK PREPROD API liste video dans la rubrique 1 catalogue tvod
+preprod;pink.backoffice.preprod.42cloud.io;/api/videos/id=2;PINK PREPROD API Video details
+prod;hotvideo.backoffice.prod.42cloud.io;/api/catalogs;HOTVIDEO PREPROD API HOME
+prod;hotvideo.backoffice.prod.42cloud.io;/api/banners/catalog/1;HOTVIDEO PREPROD API HOME catalogue TVOD
+prod;hotvideo.backoffice.prod.42cloud.io;/api/videos_rubrics/rubric=1/catalog=1;HOTVIDEO PREPROD API liste video dans la rubrique 1 catalogue tvod
+prod;hotvideo.backoffice.prod.42cloud.io;/api/videos/id=2;HOTVIDEO PREPROD API Video details
+prod;pink.backoffice.prod.42cloud.io;/api/catalogs;PINK PREPROD API HOME
+prod;pink.backoffice.prod.42cloud.io;/api/banners/catalog/1;PINK PREPROD API HOME catalogue TVOD
+prod;pink.backoffice.prod.42cloud.io;/api/videos_rubrics/rubric=1/catalog=1;PINK PREPROD API liste video dans la rubrique 1 catalogue tvod
+prod;pink.backoffice.prod.42cloud.io;/api/videos/id=2;PINK PREPROD API Video details
+apiprod;hotvideo.42cloud.io;/app.php/api/catalogs;HOTVIDEO PREPROD API HOME
+apiprod;hotvideo.42cloud.io;/app.php/api/banners/catalog/1;HOTVIDEO PREPROD API HOME catalogue TVOD
+apiprod;hotvideo.42cloud.io;/app.php/api/videos_rubrics/rubric=1/catalog=1;HOTVIDEO PREPROD API liste video dans la rubrique 1 catalogue tvod
+apiprod;hotvideo.42cloud.io;/app.php/api/videos/id=2;HOTVIDEO PREPROD API Video details
+apiprod;pinktv.42cloud.io;/app.php/api/catalogs;PINK PREPROD API HOME
+apiprod;pinktv.42cloud.io;/app.php/api/banners/catalog/1;PINK PREPROD API HOME catalogue TVOD
+apiprod;pinktv.42cloud.io;/app.php/api/videos_rubrics/rubric=1/catalog=1;PINK PREPROD API liste video dans la rubrique 1 catalogue tvod
+apiprod;pinktv.42cloud.io;/app.php/api/videos/id=2;PINK PREPROD API Video details
+apipreprod;hotvideo.preprod.42cloud.io;/app.php/api/catalogs;HOTVIDEO PREPROD API HOME
+apipreprod;hotvideo.preprod.42cloud.io;/app.php/api/banners/catalog/1;HOTVIDEO PREPROD API HOME catalogue TVOD
+apipreprod;hotvideo.preprod.42cloud.io;/app.php/api/videos_rubrics/rubric=1/catalog=1;HOTVIDEO PREPROD API liste video dans la rubrique 1 catalogue tvod
+apipreprod;hotvideo.preprod.42cloud.io;/app.php/api/videos/id=2;HOTVIDEO PREPROD API Video details
+apipreprod;pinktv.preprod.42cloud.io;/app.php/api/catalogs;PINK PREPROD API HOME
+apipreprod;pinktv.preprod.42cloud.io;/app.php/api/banners/catalog/1;PINK PREPROD API HOME catalogue TVOD
+apipreprod;pinktv.preprod.42cloud.io;/app.php/api/videos_rubrics/rubric=1/catalog=1;PINK PREPROD API liste video dans la rubrique 1 catalogue tvod
+apipreprod;pinktv.preprod.42cloud.io;/app.php/api/videos/id=2;PINK PREPROD API Video details

@@ -1,0 +1,24 @@
+/preprod/hotvideo/app.php/api/catalogs;HOTVIDEO PREPROD API Home
+/preprod/hotvideo/app.php/api/banners/catalog/1;HOTVIDEO PREPROD API HOME catalogue TVOD
+/preprod/hotvideo/app.php/api/videos_rubrics/rubric=1/catalog=1;HOTVIDEO PREPROD API liste video dans la rubrique 1 catalogue tvod
+/preprod/hotvideo/app.php/api/videos/id=2;HOTVIDEO PREPROD API Video details
+/preprod/hotvideo/statics/qml/default/main.qml;HOTVIDEO PREPROD Acces Statics S3 test2
+/preprod/hotvideo/statics/qml/main.qml;HOTVIDEO PREPROD Acces Statics S3 qml main.qml
+/preprod/pink/app.php/api/catalogs;PINK PREPROD API Home
+/preprod/pink/app.php/api/banners/catalog/1;PINK PREPROD API HOME catalogue TVOD
+/preprod/pink/app.php/api/videos_rubrics/rubric=1/catalog=1;PINK PREPROD API liste video dans la rubrique 1 catalogue tvod
+/preprod/pink/app.php/api/videos/id=2;PINK PREPROD API Video details
+/preprod/pink/statics/qml/default/main.qml;PINK PREPROD Acces Statics S3 test2
+/preprod/pink/statics/qml/main.qml;PINK PREPROD Acces Statics S3 qml main.qml
+/prod/hotvideo/app.php/api/catalogs;HOTVIDEO PROD API Home
+/prod/hotvideo/app.php/api/banners/catalog/1;HOTVIDEO PROD API HOME catalogue TVOD
+/prod/hotvideo/app.php/api/videos_rubrics/rubric=1/catalog=1;HOTVIDEO PROD API liste video dans la rubrique 1 catalogue tvod
+/prod/hotvideo/app.php/api/videos/id=2;HOTVIDEO PROD API Video details
+/prod/hotvideo/statics/qml/v0.48/main.qml;HOTVIDEO PROD Acces Statics S3 test1
+/prod/hotvideo/statics/qml/main.qml;HOTVIDEO PROD Acces Statics S3  qml main.qml
+/prod/pink/app.php/api/catalogs;PINK PROD API Home
+/prod/pink/app.php/api/banners/catalog/1;PINK PROD API HOME catalogue TVOD
+/prod/pink/app.php/api/videos_rubrics/rubric=1/catalog=1;PINK PROD API liste video dans la rubrique 1 catalogue tvod
+/prod/pink/app.php/api/videos/id=2;PINK PROD API Video details
+/prod/pink/statics/qml/v0.48/main.qml;PINK PROD Acces Statics S3 test1
+/prod/pink/statics/qml/main.qml;PINK PROD Acces Statics S3  qml main.qml

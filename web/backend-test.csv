@@ -1,0 +1,30 @@
+preprod;hotvideo.backoffice.preprod.42cloud.io;/api/catalogs;HOTVIDEO BACKOFFICE PREPROD HOME
+preprod;pink.backoffice.preprod.42cloud.io;/api/catalogs;PINK BACKOFFICE PREPROD HOME
+preprod;brazzers.backoffice.preprod.42cloud.io;/api/catalogs;BRAZZERS BACKOFFICE PREPROD HOME
+prod;hotvideo.backoffice.prod.42cloud.io;/api/catalogs;HOTVIDEO BACKOFFICE PROD HOME
+prod;hotvideo.backoffice.prod.42cloud.io;/api/banners/catalog/1;HOTVIDEO BACKOFFICE PROD HOME catalogue TVOD
+prod;hotvideo.backoffice.prod.42cloud.io;/api/videos_rubrics/rubric=1/catalog=1;HOTVIDEO BACKOFFICE PROD liste video dans la rubrique 1 catalogue tvod
+prod;hotvideo.backoffice.prod.42cloud.io;/api/videos/id=2;HOTVIDEO BACKOFFICE PROD Video details
+prod;brazzers.backoffice.prod.42cloud.io;/api/catalogs;BRAZZERS BACKOFFICE PROD HOME
+prod;brazzers.backoffice.prod.42cloud.io;/api/banners/catalog/1;BRAZZERS BACKOFFICE PROD HOME catalogue TVOD
+prod;brazzers.backoffice.prod.42cloud.io;/api/videos_rubrics/rubric=1/catalog=1;BRAZZERS BACKOFFICE PROD liste video dans la rubrique 1 catalogue tvod
+prod;brazzers.backoffice.prod.42cloud.io;/api/videos/id=6;BRAZZERS BACKOFFICE PROD Video details
+prod;pink.backoffice.prod.42cloud.io;/api/catalogs;PINK BACKOFFICE PROD HOME
+prod;pink.backoffice.prod.42cloud.io;/api/banners/catalog/1;PINK BACKOFFICE PRODHOME catalogue TVOD
+prod;pink.backoffice.prod.42cloud.io;/api/videos_rubrics/rubric=1/catalog=1;PINK BACKOFFICE PROD liste video dans la rubrique 1 catalogue tvod
+prod;pink.backoffice.prod.42cloud.io;/api/videos/id=2;PINK BACKOFFICE PROD Video details
+apiprod;hotvideo.42cloud.io;/app.php/api/catalogs;HOTVIDEO PROD API  HOME
+apiprod;hotvideo.42cloud.io;/app.php/api/banners/catalog/1;HOTVIDEO PROD API HOME catalogue TVOD
+apiprod;hotvideo.42cloud.io;/app.php/api/videos_rubrics/rubric=1/catalog=1;HOTVIDEO API PROD liste video dans la rubrique 1 catalogue tvod
+apiprod;hotvideo.42cloud.io;/app.php/api/videos/id=2;HOTVIDEO API PROD Video details
+apiprod;brazzers.42cloud.io;/app.php/api/catalogs;BRAZZERS PROD API  HOME
+apiprod;brazzers.42cloud.io;/app.php/api/banners/catalog/1;BRAZZERS PROD API HOME catalogue TVOD
+apiprod;brazzers.42cloud.io;/app.php/api/videos_rubrics/rubric=1/catalog=1;BRAZZERS API PROD liste video dans la rubrique 1 catalogue tvod
+apiprod;brazzers.42cloud.io;/app.php/api/videos/id=6;BRAZZERS API PROD Video details
+apiprod;pinktv.42cloud.io;/app.php/api/catalogs;Pink PROD API  HOME
+apiprod;pinktv.42cloud.io;/app.php/api/banners/catalog/1;Pink PROD API HOME catalogue TVOD
+apiprod;pinktv.42cloud.io;/app.php/api/videos_rubrics/rubric=1/catalog=1;Pink API PROD liste video dans la rubrique 1 catalogue tvod
+apiprod;pinktv.42cloud.io;/app.php/api/videos/id=2;Pink API PROD Video details
+apipreprod;hotvideo.preprod.42cloud.io;/app.php/api/catalogs;HOTVIDEO PREPROD API HOME
+apipreprod;pinktv.preprod.42cloud.io;/app.php/api/catalogs;Pink PREPROD API HOME
+apipreprod;brazzers.preprod.42cloud.io;/app.php/api/catalogs;Brazzers PREPROD API HOME

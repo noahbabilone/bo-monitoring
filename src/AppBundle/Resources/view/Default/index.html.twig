@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<table border="1" width="100%">
+    <thead>
+        <tr>
+            <td>Instance</td>
+            <td>Nom</td>
+            <td>Status</td>
+            <td>Actif?</td>
+            <td>Démarrée le:</td>
+            <td>Zone</td>
+            <td>Public IP</td>
+            <td>Private IP</td>
+            <td>VPC</td>
+            <td>Subnet</td>
+            <td>Actions</td>
+        </tr>
+    </thead>
+    <tbody>
+    {% for varnish in instances %}
+        <tr>
+            <td>{{ varnish }}</td>
+            <td>Nom</td>
+            <td>Status</td>
+            <td>Actif?</td>
+            <td>Démarrée le:</td>
+            <td>Zone</td>
+            <td>Public IP</td>
+            <td>Private IP</td>
+            <td>Subnet</td>
+            <td>Actions</td>
+            <td>Logs</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<table border="1" width="100%">
+    <thead>
+        <tr>
+            <td>Instance</td>
+            <td>Nom</td>
+            <td>Status</td>
+            <td>Actif?</td>
+            <td>Démarrée le:</td>
+            <td>Zone</td>
+            <td>Public IP</td>
+            <td>Private IP</td>
+            <td>VPC</td>
+            <td>Subnet</td>
+            <td>Actions</td>
+        </tr>
+    </thead>
+    <tbody>
+    {% for varnish in instances %}
+        <tr>
+            <td>{{ varnish }}</td>
+            <td>Nom</td>
+            <td>Status</td>
+            <td>Actif?</td>
+            <td>Démarrée le:</td>
+            <td>Zone</td>
+            <td>Public IP</td>
+            <td>Private IP</td>
+            <td>VPC</td>
+            <td>Subnet</td>
+            <td>Actions</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}

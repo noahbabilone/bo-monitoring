@@ -1,0 +1,358 @@
+{% extends '::base.html.twig' %}
+ {% block stylesheets %}
+     {{ parent() }}
+     <style>
+         .page-header {
+             margin: 10px 0 10px !important;
+         }
+
+         li > img {
+             margin-top: 10px;
+             margin-bottom: 10px;
+         }
+     </style>
+ {% endblock stylesheets %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-sm-3">
+            <h4 class="page-header text-warning">Vérifier les étapes ci-dessous:</h4>
+            <ol>
+
+                <li><a href="#">Vérification Compte et région</a></li>
+                <li><a href="#">Zones n’ont pas d’incident</a></li>
+                <li><a href="#">Instances sont bien allumé</a></li>
+                <li><a href="#">ElasticIP est bien associé aux varnish</a></li>
+                <li><a href="#">Historique de lancement des instances sur l’auto scaling group</a></li>
+                <li><a href="#">Statut de la base de données</a></li>
+                <li><a href="#">Restaurer un snapchot de la base de données</a></li>
+                <li><a href="#">Statuts sur varnish</a></li>
+                <li><a href="#">Apache sur les backends</a></li>
+
+            </ol>
+        </div>
+        <div class="col-sm-9">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h4 class="page-header text-info">Procédure de diagnostic de l’infra AWS Freebox Hotvideo</h4>
+                    <h5>Cas d’usage :</h5>
+                    <p>
+                        Un ou plusieurs services AWS Freebox ne sont plus disponibles pour l’utilisateur.
+                        Il faut alors tester le cheminement des paquets depuis le point d’entrée (Cache Varnish)
+                        jusqu’au
+                        service(s) défaillant.
+                    </p>
+                </div>
+                <div class="col-sm-12">
+
+
+                    <h5>Vérification compte et région</h5>
+                    <ul>
+                        <li>Connectez-vous sur la console</li>
+                        <li>En haut à droite de la console, vérifier que le numéro du compte correspond bien à
+                            l’infrastructure AWS FREEBOX comme ci-dessous
+                            <img src="{{ asset('assets/images/doc/aws_account.png') }}" title=""
+                                 width="50%" alt="" class="img-responsive">
+                            <p>
+                                Nous allons vérifier que nous sommes bien dans la région Irlande
+                                AWS possède plusieurs régions avec différente zone. Chaque région a sa propre
+                                infrastructure, vous ne pourrais pas voir des instances installées en Irlande sur la
+                                région
+                                francfort par exemple !
+                            </p>
+                        </li>
+                        <li>La région est indiquée en haut à droit de la console
+                            <img src="{{ asset('assets/images/doc/aws_account.png') }}" title=""
+                                 width="50%" alt="" class="img-responsive">
+                        </li>
+                    </ul>
+
+
+                </div>
+
+                <div class="col-sm-12">
+                    <h5>Vérification que les zones n’ont pas d’incident</h5>
+                    <ul>
+
+                        <li>
+                            Cliquez sur Services sur la barre puis cliquez sur EC2
+
+                            <img src="{{ asset('assets/images/doc/zone.png') }}" title=""
+                                 width="50%" alt="" class="img-responsive">
+                        </li>
+
+
+                        <li>Allez en bas de page et vérifier que les zone ou sont hébergé notre infrastructure sont bien
+                            opérationnels
+                            <img src="{{ asset('assets/images/doc/zone_service.png') }}" title=""
+                                 width="50%" alt="" class="img-responsive">
+                        </li>
+                    </ul>
+
+                </div>
+                <div class="col-sm-12">
+                    <h5>Vérification que les instances sont bien allumé</h5>
+                    <ul>
+
+                        <li> Sur la console dans le service EC2
+
+
+                            <img src="{{ asset('assets/images/doc/instance_start.png') }}" title=""
+                                 width="60%" alt="" class="img-responsive">
+                        </li>
+                        <li> Cliquez sur instances
+
+
+                            <img src="{{ asset('assets/images/doc/instance_start.png') }}" title=""
+                                 width="60%" alt="" class="img-responsive">
+                        </li>
+
+
+                        <li> Cliquer sur la roue crantée en haut à droite de la console
+
+                            <img src="{{ asset('assets/images/doc/instance_console.png') }}" title=""
+                                 width="50%" alt="" class="img-responsive">
+                        </li>
+                        <li> Cocher les Tag Keys comme ci-dessous
+                            <ul>
+                                <li>Name : Nom de l’instance</li>
+                                <li>Env : Environnement de l’instance</li>
+                                <li>Statut_Varnish : l’instance varnish qui est utilisé par défaut
+                                </li>
+                            </ul>
+                            <img src="{{ asset('assets/images/doc/slide_show_cols.png') }}" title=""
+                                 width="60%" alt="" class="img-responsive">
+                            <p>Nous allons donc maintenant vérifier les statuts des instances</p>
+                        </li>
+                        <li>Vérifier l’état des instances qui sont tagué Infra Freebox
+
+                            <img src="{{ asset('assets/images/doc/etat_instance.png') }}" title=""
+                            >
+                            <p>Au cas une machine est « <img src="{{ asset('assets/images/doc/etat_stop.png') }}"
+                                                             width="7%" alt="" alt="">  », on clic droit sur l’instance
+                                concerné, dans Instance State sélectionnez Start et attendez 2 min que machine démarre
+                                et re testé le service.
+                            </p>
+                            <img src="{{ asset('assets/images/doc/menu_instance.png') }}" title=""
+                            ></li>
+                    </ul>
+
+                </div>
+
+                <div class="col-sm-12">
+                    <h5>Vérification que l’elasticIP est bien associé aux varnish</h5>
+                    <ul>
+
+                        <li>
+                            Dans le service EC2, sélectionner l’instance Varnish_Main puis dans l’onglet description
+                            vérifier que L’Elastic IPs correspond bien à 52.211.1.46
+
+
+                            <img src="{{ asset('assets/images/doc/elasticIP.png') }}" title=""
+                                 width="50%" alt="" class="img-responsive">
+                        </li>
+
+
+                    </ul>
+
+                </div>
+                <div class="col-sm-12">
+                    <h5>Vérification historique de lancement des instances sur l’auto scaling group</h5>
+                    <ul>
+
+                        <li>Sur la console dans le service EC2
+                            <img src="{{ asset('assets/images/doc/service_s2.png') }}" title=""
+                                 width="50%" alt="" class="img-responsive">
+                        </li>
+                        <li>A gauche dans l’EC2 Dashboard, cliquer sur Auto Scaling Groups
+                            <img src="{{ asset('assets/images/doc/ec2_dasboard.png') }}" title=""
+                                 width="" alt="" class="img-responsive">
+                        </li>
+                        <li>Sélectionnez sur l’auto scaling groups en prod « backoffice_prod_hotvideo_AsG » puis cliquer
+                            sur l’onglet Activity History
+
+                            <img src="{{ asset('assets/images/doc/scaling_group.png') }}" title=""
+                                 class="img-responsive">
+                            <p>Nous avons l’activité de tous les machine qui on était terminé et lancé par l’auto
+                                scaling group</p>
+
+                            <img src="{{ asset('assets/images/doc/scaling_group.png') }}" title=""
+                                 class="img-responsive">
+                        </li>
+                        <li>
+                            Nous avons l’activité de tous les machine qui on était terminé et lancé par l’auto scaling
+                            group
+
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-sm-12">
+                    <h5>Vérification du statut de la base de données</h5>
+                    <ul>
+
+                        <li>Sur la console cliquez dans le service RDS
+
+                            <img src="{{ asset('assets/images/doc/rds.png') }}" title=""
+                                 width="50%" alt="" class="img-responsive">
+                        </li>
+                        <li>1) Cliquez sur instances
+                            <img src="{{ asset('assets/images/doc/rds_dasboard.png') }}" title=""
+                                 width="" alt="" class="img-responsive">
+                        </li>
+                        <li>1) Cochez sur la base de donné puis vérifier les éléments ci-dessous
+
+
+                            <img src="{{ asset('assets/images/doc/database.png') }}" title=""
+                                 class="img-responsive">
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-sm-12">
+                    <h5>Restaurer un snapchot de la base de données </h5>
+                    <ul>
+
+                        <li>Sur la console cliquez dans le service RDS
+
+                            <img src="{{ asset('assets/images/doc/service_RDS.png') }}" title=""
+                                 width="50%" alt="" class="img-responsive">
+                        </li>
+                        <li>Cliquez sur instances
+                            <img src="{{ asset('assets/images/doc/rds_dasboard.png') }}" title=""
+                                 width="" alt="" class="img-responsive">
+                        </li>
+                        <li>Cochez sur la base de donné, puis dans l’onglet Instance Action sélectionnez Restore to
+                            Point in time
+
+
+                            <img src="{{ asset('assets/images/doc/restauration_point_time.png') }}" title=""
+                                 class="img-responsive">
+                        </li>
+                        <li>Sélectionnez vote date du point de restauration
+
+                            <img src="{{ asset('assets/images/doc/lauch_db.png') }}" title=""
+                                 class="img-responsive">
+                        </li>
+                        <li>Valider votre point de restauration en cliquant sur Launch DB Instance en bas à gauche de la
+                            page
+
+                            <img src="{{ asset('assets/images/doc/lauch_db_save.png') }}" title=""
+                                 class="img-responsive">
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-sm-12">
+                    <h5>Vérification des statuts sur varnish</h5>
+                    <ul>
+
+                        <li>Se connecter au backoffice client ( reprendre le doc ssh : comment se connecter au
+                            backoffice )
+                        </li>
+                        <li>Depuis la console ssh du backoffice client, connectez-vous à l’instance varnish
+
+                        </li>
+                        <li>Cochez sur la base de donné, puis dans l’onglet Instance Action sélectionnez Restore to
+                            Point in time <br>
+                            <code>ssh -i 42-management.pem ec2-user@ip-varnish</code>
+                        </li>
+                        <li>Vérifier que les backend sont bien « healthy » actif
+                            <br>
+                            <code>sudo varnishadm bakend.list</code>
+                            <img src="{{ asset('assets/images/doc/healty.png') }}" title=""
+                                 class="img-responsive">
+                        </li>
+                        <li>Au cas où les backend sont « sick » reset le service varnish <br>
+                            <code>sudo varnish service restart</code>
+                            <p>Revérifier que les backend sont « healthy » le cas échéant terminer le backend défectueux
+                                elle remontera tous seul via l’auto scalling groupe</p>
+                        </li>
+                        <li>
+                            Checker si le serveur apache des backend répond bien au varnish, il doit nous retourner
+                            Hello Varnish
+                            <br>
+                            <code>sudo curl http:ip_varnish/check.php</code>
+
+                            <img src="{{ asset('assets/images/doc/check.png') }}" title=""
+                                 class="img-responsive">
+                            <p>Le cas échant connectez-vous en ssh backend et faite un restart du serveur apache</p>
+                        </li>
+                        <li>Vérifier que le traffic transit bien dans le varnish
+                            <code>sudo varnishtop</code>
+                            <p>Voici différente commande qui permettrons de voir le traffic de varnish :</p>
+                            <ul>
+                                <li>Voir les lignes de log par requête
+
+                                    <br>
+
+                                    <code>sudo varnishncsa -F "%h %l %u %t %r %b %{varnish:hitmiss}x"</code></li>
+                                <li>
+                                    Cela affiche l'ensemble des logs Varnish
+                                    <code>sudo varnishlog</code>
+                                </li>
+                                <li>Cela affiche les top urls <br>
+                                    <code>sudo varnishtop -i requrl</code></li>
+                                <li>Cela affiche l'ensemble des métriques dispo dans Varnish (Nombre de HIT, de MISS,
+                                    Requête ...)
+                                    <br>
+                                    <code>sudo varnishstat</code>
+                                </li>
+                                <li></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-sm-12">
+                    <h5>Vérification des services sur le backend</h5>
+                    <ul>
+                        <li> Se connecter sur l’instance de Management ( reprendre le doc ssh : comment se connecter
+                            au backoffice)
+                        </li>
+                        <li> Se connecter sur l’instance Varnish « Active »
+                            <br>
+                            <em>Consultez la page http://management.freebox.42cloud.io pour connaitre l’IP privée a
+                                utiliser.
+                            </em>
+                            <br>
+                            <code>sudo -i 42-management.pem ec2-user@ip_backend</code>
+                        </li>
+                        <li>Checker le service httpd
+                            <br>
+                            <code>sudo service httpd status</code>
+                        </li>
+                        <li>Naviguez dans le dossier du service concerné par exemple Hotvideo
+                            <br>
+                            <code>cd /opt/hotvideo</code>
+                        </li>
+                        <li>Lancer le script clear-prod
+                            <br>
+                            <em>Il nous permet dans un premier temps de remonter la config sur le backend, de faire un
+                                clear et ainsi un warmup du cache et enfin il nous permettra de voir les éventuelles
+                                erreurs entre le backend et varnish ou la base de donnée</em>
+                            <code>sudo sh clear-prod.sh</code>
+                            <img src="{{ asset('assets/images/doc/clear-prod.png') }}" alt="">
+
+                            <p>S’il y a des bandeaux rouges voir l’erreur qui est associé
+                            </p></li>
+                        <li>Faire un test sur la base de donnée <br>
+                            <code>sudo php app/console doctrine:schema:update --dump-sql</code>
+
+                        </li>
+                        <li>Tester que le backend répond bien au cache varnish pour cela <br>
+
+                            <code>php app/console server:run</code>
+                            <img src="{{ asset('assets/images/doc/test_varnish.png') }}" alt="">
+                        </li>
+                        <li>Sur une autre console ssh. Lancer une commande d’appel comme ci-dessous
+                            <br>
+                            <code>sudo curl http://127.0.0.1:8000/statics/api/catalogs</code><br>
+                            <code>sudo curl http://127.0.0.1:8000/statics/qml/main.qml</code>
+                            <p>Si le résultat retourné est une page symphony c’est que le backend ne retourne pas la requête au varnish</p>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+{% endblock %}

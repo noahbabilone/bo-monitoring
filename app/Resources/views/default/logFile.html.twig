@@ -1,0 +1,62 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="row">
+        <div class="col-sm-9">
+            {#<a href="{{ path('homepage') }}" class="btn btn-sm btn-primary">Revenir aux instances</a>#}
+            <ol class="breadcrumb   ">
+                <li class="breadcrumb-item"><a href="{{ path('homepage') }}">Instances</a></li>
+                <li class="breadcrumb-item active">Log</li>
+                <span class="breadcrumb-item pull-right" ><i class="fa fa-clock-o fa-fw"></i>Test log<span id="timer"> </span></span>
+            </ol>
+        </div>
+        {#<div class="col-sm-1" id="timer"></div>#}
+        <div class="col-sm-3">
+            <a href="{{ asset('log/notifier.log') }}" target="_blank" class="btn btn-sm btn-block btn-default "><i
+                        class="fa fa-terminal fa-fw"></i>Voir le fichier de log</a>
+        </div>
+        {#{{ dump(ec2) }}#}
+
+        {% if logs is defined %}
+            {#{{ dump(logs) }}#}
+            <div class="console">
+                {% for log  in logs %}
+                    <div class="ligne_entiere">
+                        <div class="ligne_number">
+                            {% if  'PROD' in log or  'Test' in log %}
+                                <span class="text-success bold">{{ loop.index }}</span>
+                            {% elseif 'Code: 200' in  log %}
+                                {{ loop.index }}
+                            {% else %}
+                                <span class="text-danger bold">{{ loop.index }}</span>
+                            {% endif %}
+                        </div>
+                        <div class="ligne_code">
+                            {% if  'PROD' in log or  'Test' in log %}
+                                <span class="text-success bold">{{ log }}</span>
+                            {% elseif 'Code: 200' in  log %}
+                                {{ log }}
+                            {% else %}
+                                <span class="text-danger bold">{{ log }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                {% else %}
+                    <div class="col-sm-12">
+                        <div class="alert alert-warning">Aucune donnée dans le fichier de log.</div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    {#{{ dump(instances) }}#}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+    'bundles/app/js/log.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+
+{% endblock %}

@@ -1,0 +1,102 @@
+{% extends 'base.html.twig' %}
+ {% block stylesheets %}
+     {{ parent() }}
+     {% stylesheets
+     'bundles/app/plugins/bootstrap-switch/css/bootstrap-toggle.min.css'
+     filter='cssrewrite' %}
+     <!-- END GLOBAL MANDATORY STYLES -->
+     <link rel="stylesheet" href="{{ asset_url }}"/>
+     {% endstylesheets %}
+     <style type="text/css">
+         h4.page-header > a {
+             position: absolute;
+             right: 5px;
+             top: 5px;
+         }
+     </style>
+ {% endblock stylesheets %}
+
+{% block body %}
+    <div class="page-url">
+        {% for type, messages in app.session.flashBag.all %}
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    {% for message in messages %}
+                        <div class="{{ type }}">
+                            <button type="button" class="close" data-dismiss="alert"
+                                    aria-hidden="true"></button>
+                            {{ message | raw }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+
+        {#{{ dump(customers) }}#}
+        {% for customer in customers %}
+
+            <h4 class="page-header"><i class="fa fa-files-o fa-fw"></i> Factures {{ customer.name }}
+                <a href="#test_{{ customer.name | lower }}"
+                   data-customer="{{ customer.name | lower }}"
+                   class="btn btn-run-test btn-warning btn-sm pull-right"><i
+                            class="fa fa-play fa-fw"></i>Test</a></h4>
+            <table class="table table-hover" id="">
+                <thead>
+                <tr class="active">
+                    <th class="col-sm-3">Fichiers</th>
+                    <th class="col-sm-2">FTP</th>
+                    <th class="col-sm-2 text-center">S3</th>
+                    <th class="col-sm-3 text-center">Date Création</th>
+                    <th class="col-sm-2 text-center">Actions</th>
+                </tr>
+                </thead>
+
+                <tbody class="tbody">
+                {% for  invoice in customer.invoices %}
+                    <tr>
+                        <td class="">{{ invoice.file }}</td>
+                        <td>{% if invoice.ftp %} Oui {% else %} Non {% endif %}</td>
+                        <td class="text-center">{% if invoice.s3 %} Oui {% else %} Non {% endif %}</td>
+                        <td class="text-center">{{ invoice.created | date('d/m/y H:i:s') }}</td>
+                        <td class="text-center">
+                            {% if invoice.s3 %}
+                                <a class="btn btn-xs btn-success"
+
+                                   href="{{ path('exports_download', {'id': invoice.id }) }}">
+                                    <i class="fa fa-download"></i> Télécharger
+                                </a>
+                                <button
+                                        class="btn btn-xs btn-default btn-txt"
+                                        data-url="{{ customer.url ~'/statics/exports/auto_facture_abonnement/' ~ invoice.file }}"
+                                        data-file="{{ invoice.file }}"
+                                        data-customer="{{ customer.name | capitalize }}"
+                                ><i class="fa fa-eye fa-fw"></i> Afficher
+                                </button>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endfor %}
+        {#<br/>
+        <div class="text-center">
+            {{ knp_pagination_render(customers) }}
+        </div>
+        <br/>
+        <br/>#}
+
+    </div>
+{% endblock %}
+
+    {% block javascripts %}
+        {{ parent() }}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.5/sweetalert2.all.min.js"></script>
+
+        {% javascripts
+        'bundles/app/plugins/bootstrap-switch/js/bootstrap-toggle.min.js'
+        'bundles/app/plugins/notify/bootstrap-notify.min.js'
+        'bundles/app/js/invoice.js' %}
+        <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+    {% endblock %}

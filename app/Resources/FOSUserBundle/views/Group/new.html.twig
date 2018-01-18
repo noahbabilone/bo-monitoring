@@ -1,0 +1,14 @@
+{% extends "@FOSUser/layout.html.twig" %}
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        body {
+            background: #eee !important;
+        }
+    </style>
+{% endblock stylesheets %}
+
+
+{% block fos_user_content %}
+{% include "@FOSUser/Group/new_content.html.twig" %}
+{% endblock fos_user_content %}

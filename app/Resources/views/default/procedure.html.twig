@@ -1,0 +1,217 @@
+{% extends '::base.html.twig' %}
+ {% block stylesheets %}
+     {{ parent() }}
+     <style>
+         .page-header {
+             margin: 10px 0 10px !important;
+         }
+
+         li > img {
+             margin-top: 10px;
+             margin-bottom: 10px;
+         }
+     </style>
+ {% endblock stylesheets %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-sm-9">
+            <h2 class="page-header text-warning">Procedure d’ACCES DISTANT</h2>
+
+            <h3 class="text-warning">Introduction</h3>
+            <h4>Objectif</h4>
+            <h5 class="text-danger">A Propos de l’infrastructure AWS Freebox</h5>
+            <p>
+                Les services VOD hébergés étant délivrés sur internet, l’exposition des instances EC2 qui la compose a
+                été
+                limitée aux seuls protocoles nécessaires au fonctionnement des applications. Les accès distants (SSH)
+                notamment
+                ne sont pas autorisé directement sur les instances de l’infrastructure (Proxy/Cache Varnish, API &
+                Backoffice
+                Client).
+            </p>
+            <p>
+                Dans le cadre des opérations de support en production, ces accès a distance s’effectuerons à travers une
+                instance « bastion », seul point d’accès SSH autorisé sur l’infrastructure.
+                Les configurations des Security Groups sont effectuées en ce sens pour limiter les protocoles autorisés
+                et
+                restreindre les plages d’adresses IP sources autorisées à y accéder.</p>
+            <h5 class="text-danger">Instance « Bastion » 42Management-Munin – Services hébergés.</h5>
+
+            <p>
+                L’instance nommée 42Management-Munin, en plus d’être notre point d’entrée pour les connexion SSH, expose
+                des
+                services de supervision et de gestion de l’infrastructure. L’accès à ces services (en HTTP) est
+                restreint
+                sur
+                l’adresse IP des bureaux de 42 Mediatvcom.</p>
+            <p>
+                La procédure qui suit détaille les étapes à suivre pour : 1 – Accéder à cette instance bastion et a ses
+                services; 2 – Se connecter aux différents services de l’infra depuis l’instance bastion.
+            </p>
+
+
+            <h3 class="text-warning">Accès SSH à l’instance 42Management-Munin</h3
+            <h4>Prérequis :</h4>
+            <h4 class="text-danger">Clé SSH</h4>
+            <p>
+                L’accès SSH est soumis à une authentification par « key pair ». vous devrez donc être en possession de
+                la bonne clé SSH pour vous connecter.</p>
+            La clé SSH est un fichier au format .pem (Mac, Linux, Unix) ou ppk (connexion depuis le client putty sous
+            Windows).
+            </p>
+            <p> La clé employée sur l’infrastructure se nomme « 42-Management », toutefois, elle ne doit en aucun cas
+                être
+                divulguée ou distribuée en dehors des équipes en charges de l’administration et du support de
+                l’infrastructure AWS Freebox.</p>
+            <p> Cette clé est susceptible d’être changée, aussi vous devez Controller quelle clé est utilisée avant de
+                vous
+                connecter.</p>
+            <p> Pour cela, connectez-vous sur la console AWS du compte « Freebox » à l’aide de vos identifiants
+                personnels.
+            </p>
+            <ul>
+                <li>
+                    Cliquez sur « Services » puis sélectionnez « EC2 »
+                    <img src="{{ asset('assets/images/procedure/ec2.png') }}" alt="">
+                </li>
+                <li>Rendez-vous dans le menu « Instances »
+                    <img src="{{ asset('assets/images/procedure/instance_ec2.png') }}" alt="">
+                </li>
+                <li>Identifiez l’instance nommée « 42Management-Munin » et sélectionnez là.
+                    <img src="{{ asset('assets/images/procedure/mmunin.png') }}" alt="">
+
+                </li>
+                <li>Les informations relatives à cette instance s’affichent alors dans la partie inférieure de l’ecran.
+                    Identifiez le champs « Key pair Name » et relevez le nom de la clé SSH à utiliser :
+                    <img src="{{ asset('assets/images/procedure/ssh-key.png') }}" alt="">
+
+                </li>
+            </ul>
+            <p>
+                Si vous devez vous connecter à l’infrastructure mais que vous ne disposez pas de la bonne clé, veuillez
+                contacter l’administrateur système pour qu’il vous la fournisse.
+            <p>
+            <h4 class="text-danger">Security Groups</h4>
+            <p>L’accès SSH à cette instance est limité à la seule adresse IP du bureau. Si vous devez vous connecter de
+                manière ponctuelle depuis une localisation extérieure (votre domicile, un point d’accès tiers…) vous
+                devez
+                autoriser votre adresse IP publique dans le security group correspondant :
+            </p>
+            <p>
+                Pour cela, connectez-vous sur la console AWS du compte « Freebox » à l’aide de vos identifiants
+                personnels.
+            </p>
+            <ul>
+                <li>Cliquez sur « Services » puis sélectionnez « EC2 »
+                    <img src="{{ asset('assets/images/procedure/ec2.png') }}" alt="">
+                </li>
+                <li>Rendez-vous dans le menu « Security Groups »
+                    <p>Les Security Groups ont été définis selon une vision fonctionnelle (chaque Security Group
+                        autorise les protocoles/sources requis pour une fonctionnalité sur une ou plusieurs instances).
+                        Il conviens de respecter cette philosophie et de configurer les regles d’accès dans le security
+                        group adequat. Dans notre cas, nous souhaitons autoriser temporairement un accès au bastion
+                        SSH : Sélectionnez le Security Group nommé « Bastion-Temporaire ».
+                        <img src="{{ asset('assets/images/procedure/bastion_ssh.png') }}" alt="">
+
+                    </p>
+                </li>
+                <li>Dans la partie inférieure de l’écran, sélectionnez l’onglet « Inbound »
+                    Cet écran affiche les adresses IP autorisées à se connecter en SSH et en HTTP sur l’instance de
+                    management de l’infrastructure.
+                    <img src="{{ asset('assets/images/procedure/lnbound.png') }}" alt="">
+
+                </li>
+                <li>Cliquez sur le bouton « Edit » puis « Add Rule : Une nouvelle ligne vierge apparait
+
+                    <img src="{{ asset('assets/images/procedure/add_rule.png') }}" alt="">
+                    <ul>
+                        <li>Dans la colonne Type : Sélectionnez « SSH », les colonnes « Protocole & Port Range sont
+                            alors configurées automatiquement.
+                        </li>
+                        <li>Dans la colonne « Source » : Dépliez le menu déroulant « Custom » et sélectionnez « My IP »
+                            <img src="{{ asset('assets/images/procedure/opition_group_rule.png') }}" alt="">
+
+                            <p>Cette action a pour effet de remplir la source automatiquement avec l’adresse IP de votre
+                                connexion internet courante.
+                            </p>
+                        </li>
+                        <li>Notez votre adresse IP dans un bloc note puis cliquez sur « Save » pour valider la
+                            modification.
+                        </li>
+                        <li>Editez le fichier « Descriptif_Infra.xls » sur le dropbox 42G – AWS et rendez-vous dans
+                            l’onglet « Security Groups & ACLs ».
+
+                            <ul>
+                                <li>Recherchez le tableau correspondant au security group « Bastion-Temporaire »
+                                </li>
+                                <li>o Insérez une nouvelle ligne dans ce tableau et complétez les champs « Type »,
+                                    « Protocole », « Port Range » à l’identique de ce que vous venez de configurer
+                                </li>
+                                <li>Dans la colonne « Source » : Indiquez l’adresse IP que vous venez d’ajouter au
+                                    security group
+                                </li>
+                                <li>
+                                    Dans la colonne Comment : veuillez indiquer l’usage lié à cette règle, par exemple :
+                                    « Autorisation SSH Temporaire pour xxxxxx – Date »
+                                </li>
+                            </ul>
+
+                            <p>Remarque : Cette étape est très importante pour le suivit des configuration et pour
+                                garantir la sécurité des accès. Toute règle qui ne serait pas correctement
+                                renseignée seras supprimée.
+                            </p>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <p>Vous êtes maintenant en mesure d’établir une connexion SSH depuis votre connexion internet vers
+                l’instance 42Management-Munin.</p>
+
+            <h4>Connexion SSH depuis un environnement Linux/Unix/Mac :</h4>
+            <ul>
+                <li>Localisez le dossier dans lequel vous avez déposé votre clé SSH 42-Management.pem
+                </li>
+                <li>Ouvrez votre terminal et accédez à ce répertoire avec la commande « cd » par exemple : <br>
+                    <code>[user@MyComputer~]$ cd /home/user/Documents/AWS-Freebox/</code>
+                </li>
+                <li>Initiez la session ssh avec la commande suivante :
+                    <code>[user@MyComputer~]$ sudo ssh -i 42-Management ec2-user@management.freebox.42cloud.io</code>
+                    <ul>
+                        <li>o Il est possible que votre ordinateur vous demande un mot de passe : Vous devez alors
+                            saisir le mot de passe associé au compte « root » de votre système d’exploitation.
+                        </li>
+                        <li>Si vous vous connectez pour la premiere fois à l’instance de gestion 42Management-Munin, le
+                            message suivant apparait.
+
+                            <code>The authenticity of host 'xxxx.xxxx.xxxx.xxxx (xxxx.xxxx.xxxx.xxxx)' can't be
+                                etablished.
+                                <br>
+                                ESCDSA key fingerprint is 12:34:56:78:90:ab:cd:ef:fe:dc:ba:09:87:65:43:21. <br>
+                                Are you sure you want to continue connecting (yes/no)?
+                            </code>
+                            <p>Tapez « yes » puis pressez la toucher « Entrer » pour continuer.</p>
+                        </li>
+                        <li>Votre terminal vous indique alors : <br>
+
+                            <code>
+                                Last login: Mon Mar 27 16:16:54 2017 from 98-237-190-109.dsl.ovh.fr <br>
+                                <br>
+                                __| __|_ )<br>
+                                _| ( / Amazon Linux AMI <br>
+                                ___|\___|___| <br>
+
+                                <br>
+                                https://aws.amazon.com/amazon-linux-ami/2016.09-release-notes/ <br>
+                                11 package(s) needed for security, out of 57 available <br>
+                                Run "sudo yum update" to apply all updates. <br>
+                            </code>
+                            <p>Vous êtes alors connecté à l’instance 42Management-Munin.</p>
+                        </li>
+                    </ul>
+
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}

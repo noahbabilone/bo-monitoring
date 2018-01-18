@@ -1,0 +1,116 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-sm-12">
+            {#<a href="{{ path('homepage') }}" class="btn btn-sm btn-primary">Revenir aux instances</a>#}
+            <ol class="breadcrumb   ">
+                <li class="breadcrumb-item"><a href="{{ path('homepage') }}">Instances</a></li>
+                {% if ec2 is defined %}
+                    <li class="breadcrumb-item active">{{ ec2.instanceName }}</li>
+                {% elseif backend is defined %}
+                    <li class="breadcrumb-item active">{{ backend }}</li>
+                {% endif %}
+            </ol>
+        </div>
+        <div class="col-sm-12 aws_instance_info">
+            {% if instanceStatus is iterable %}
+                <h3>Url externe:</h3>
+                <div class="row">
+                    {% for instance in instanceStatus %}
+                        <div class="col-sm-6">
+                            <h5>Elément testé :{{ instance.instanceId }} : </h5>
+                            <b>Status courant de l'instance: </b>
+                            {% if  instance.errorCode  =="200" %}
+                                <span class="span_status span_active">OK {{ instance.errorCode }}</span>
+                            {% else %}
+                                <span class="span_status span_failed">En erreur: {{ instance.errorCode }}</span>
+                            {% endif %}
+                            <br>
+                            <b>Date d'erreur :</b>{{ instance.errorDate|date("d/m/Y H:i:s") }}<br/>
+                            {#<b>État: {{ instance.what | capitalize }}</b>#}
+
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                {#<br/>#}
+                {% if instanceStatus.status == 2 or instanceStatus.status == 200 %}
+                    {% set v_status = '<span class="span_status span_active">OK</span>' %}
+                {% else %}
+                    {% set v_status = '<span class="span_status span_failed">En erreur</span>' %}
+                {% endif %}
+                <h3>Statut courant de l'instance : <b>{{ v_status|raw }}</b></h3>
+                <b>Instance ID :</b>{{ instanceStatus.instanceId }}<br/>
+                {#<b>Type : </b>#}
+                {% if instanceStatus.status != 2 %}
+                    <b>Elément testé :</b>{{ instanceStatus.what }}<br/>
+                    <b>Code d'erreur :</b>{{ instanceStatus.errorCode }}<br/>
+                    <b>Date d'erreur :</b>{{ instanceStatus.errorDate|date("d/m/Y H:i:s") }}<br/>
+                    <b>Code d'erreur :</b>
+                    <pre>{{ instanceStatus.errorContent|raw }}</pre><br/>
+
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <a href="{{ path('reset_status_notify', {instanceid: instanceStatus.instanceId}) }}"
+                               class="btn btn-sm btn-danger">Ré-initialiser
+                                les notifications ?</a>
+                        </div>
+                        {% if shows is defined and shows %}
+                            <div class="col-lg-2 col-md-2 col-sm-5 col-xs-12 pull-right">
+                                <div class="form-group">
+                                    {% set selected = app.request.query.get("show") %}
+                                    <select name="show" class="form-control input-sm"
+                                            onchange="location = this.value;" autocomplete="off">
+                                        <option disabled {% if selected is null %}selected{% endif %}>
+                                            Nombre d'affichage
+                                        </option>
+                                        {% for show in shows %}
+                                            <option value="{{ path(app.request.attributes.get('_route'),
+                                            app.request.attributes.get('_route_params')  |merge(app.request.query.all)|
+                                            merge({'show': show })) }}"
+                                                    {% if show == selected %}selected{% endif %}>{{ show }} par page
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            {% endif %}
+            <br/>
+
+            <table class="table table-bordered table-responsive ">
+                <caption><b>Instances</b></caption>
+                <thead>
+                <tr>
+                    <td>Date</td>
+                    <td>Erreur code</td>
+                    <td>Résumé</td>
+                    <td>Détails</td>
+                </tr>
+                </thead>
+                <tbody>
+                {% for log in logs %}
+                    <tr>
+                        <td>{{ log.errorDate|date("d/m/Y H:i:s") }}</td>
+                        <td>{{ log.errorCode }}</td>
+                        <td>{{ log.what }}</td>
+                        <td>
+                            <pre>{{ log.errorContent|raw }}</pre>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <br/>
+            <div class="text-center">
+                {{ knp_pagination_render(logs) }}
+            </div>
+            <br/>
+            <br/>
+        </div>
+    </div>
+    {#{{ dump(instances) }}#}
+{% endblock %}

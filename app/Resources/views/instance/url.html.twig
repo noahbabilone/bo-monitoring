@@ -1,0 +1,241 @@
+{% extends 'base.html.twig' %}
+ {% block stylesheets %}
+     {{ parent() }}
+     {% stylesheets
+     'bundles/app/plugins/bootstrap-switch/css/bootstrap-toggle.min.css'
+     filter='cssrewrite' %}
+     <!-- END GLOBAL MANDATORY STYLES -->
+     <link rel="stylesheet" href="{{ asset_url }}"/>
+     {% endstylesheets %}
+     <style type="text/css">
+         .toggle.btn-sm {
+             min-width: 110px !important;
+         }
+     </style>
+
+ {% endblock stylesheets %}
+
+{% block body %}
+    <div class="page-url">
+        {% for type, messages in app.session.flashBag.all %}
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    {% for message in messages %}
+                        <div class="{{ type }}">
+                            <button type="button" class="close" data-dismiss="alert"
+                                    aria-hidden="true"></button>
+                            {{ message | raw }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+
+        {% if instances is defined and instances %}
+            {% for instance in instances %}
+                <h4 class="page-header"><i class="fa fa-server fa-fw"></i>{{ instance.name }}
+                    <a href="#ajout" type="button" class="btn btn-add-url btn-xs btn-success pull-right btn-lg"
+                       data-id="{{ instance.id }}"
+                       data-toggle="modal" data-target="#modal_add_url">
+                        <i class="fa fa-plus"></i> Ajouter une url
+                    </a>
+                </h4>
+
+                <table class="table table-hover" id="table-instance-{{ instance.id }}">
+                    <thead>
+                    <tr class="active">
+                        <th class="col-sm-2">Titre</th>
+
+                        {% if not instance.noHost %}
+                            <th class="col-sm-4">Url</th>
+                            <th class="col-sm-4">Host</th>
+                        {% else %}
+                            <th class="col-sm-8">Url</th>
+                        {% endif %}
+                        <th class="col-sm-2 text-center">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody class="tbody">
+                    {#{{ dump(instance.urls) }}#}
+                    {% for url in instance.urls %}
+                        <tr id="line-url-{{ url.id }}"
+                            data-instance="{{ instance.id }}"
+                            data-url="{{ url.id }}"
+                            data-title="{{ url.title }}"
+                            data-no_host="{{ instance.noHost == 1 ? 1: 0 }}"
+                            data-description="{{ url.description }}">
+                            <td class="title"
+                                data-title="{{ url.title }}"
+                            >
+                                {% if url.title | length < 20 %}
+                                    {{ url.title | capitalize }}
+                                {% else %}
+                                    {{ url.title [:20]~" ..." }}
+                                {% endif %}
+
+
+                            </td>
+                            <td class="url">{{ url.url }}</td>
+                            {% if not instance.noHost %}
+                                <td class="host">{{ url.host }}</td>
+                            {% endif %}
+                            <td class="text-center">
+                                {#<div class="td-options  hide">#}
+                                <input
+                                        name="active"
+                                        {% if url.active == 1 %}
+                                            checked
+                                        {% endif %}
+                                        id="btn_enable"
+                                        class="btn hide"
+                                        data-size="mini"
+                                        data-notify-id="{{ url.id }}"
+                                        data-notify-name="{{ url.title }}"
+                                        data-on="Activer" data-off="Désactiver"
+                                        data-onstyle="success" data-offstyle="warning"
+                                        data-toggle="toggle" type="checkbox">
+
+                                <button class="btn hide btn-xs btn-default btn-edit"><i class="fa fa-edit"></i> Edit
+                                </button>
+                                <button class="btn hide btn-xs btn-danger btn-delete"><i class="fa fa-trash"></i> Supp
+                                </button>
+                                {#</div>#}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+                {#{{ dump(instance) }}#}
+            {% else %}
+                <h3 class="">Il n'y a pas d'instance encore.</h3>
+            {% endfor %}
+
+        {% else %}
+            Pas d'Instance trouvée
+        {% endif %}
+
+
+        <!-- Modal -->
+        <div id="modal-url" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+            <div class="modal-dialog">
+                <form action="javascript:;" class="form" data-action="add">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Création URL</h4>
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="title">Titre* :</label>
+                                        <input type="text" name="title" class="form-control input-sm" required>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="instance">Instance</label>
+                                        <select name="instance" id="select-instance" class="form-control">
+                                            {% for instance in instances %}
+                                                <option value="{{ instance.id }}"
+                                                        data-no_host="{{ instance.noHost == 1 ? 1: 0 }}"
+                                                >{{ instance.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="url">URL* :</label>
+                                        <input type="text" name="url" class="form-control input-sm" required>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12" id="form-host">
+                                    <div class="form-group">
+                                        <label for="host">Host:</label>
+                                        <input type="text" name="host" class="form-control input-sm">
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="description">Description: </label>
+                                        <textarea name="description" class="form-control input-sm"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    {#<div class="checkbox ">#}
+                                    {#<label><input type="checkbox" name="active" checked> Active</label>#}
+                                    {#</div>#}
+
+                                    <input
+                                            name="active"
+                                            class="btn hide"
+                                            data-size="small"
+                                            {#data-notify-id="{{ url.id }}"#}
+                                            {#data-notify-name="{{ url.title }}"#}
+                                            data-on="Activer" data-off="Désactiver"
+                                            data-onstyle="success" data-offstyle="warning"
+                                            data-toggle="toggle" type="checkbox">
+
+
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="modal-footer">
+                            <button type="button"
+                                    class="btn btn-default btn-sm"
+                                    data-dismiss="modal"><i class="fa fa-close"></i> Fermer
+                            </button>
+                            <button class="btn btn-success btn-sm" type="submit"><i class="fa fa-save"></i> Enregistrer
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+        <div id="modal-remove-confirm" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Confirmation de la suppression d'URL</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <p class="avertissement">Vous voulez vraiment supprimer cette url <b class="url"></b>? </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default btn-sm"
+                                data-dismiss="modal"><i class="fa fa-close"></i> Non
+                        </button>
+                        <button class="btn btn-success btn-sm btn-ok"><i class="fa fa-save"></i> Oui</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+    {% block javascripts %}
+        {{ parent() }}
+        {% javascripts
+        'bundles/app/plugins/bootstrap-switch/js/bootstrap-toggle.min.js'
+        'bundles/app/plugins/notify/bootstrap-notify.min.js'
+        'bundles/app/js/url.js' %}
+        <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+
+
+    {% endblock %}

@@ -1,0 +1,10 @@
+{% extends '::base.html.twig' %}
+
+{% block title %} Connexion |  {{ parent() }} {% endblock %}
+
+
+{% block body %}
+    {% block fos_user_content %}
+        {{ include('@FOSUser/Security/login_content.html.twig') }}
+    {% endblock fos_user_content %}
+{% endblock %}

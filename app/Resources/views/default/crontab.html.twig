@@ -1,0 +1,118 @@
+{% extends 'base.html.twig' %}
+ {% block stylesheets %}
+     {{ parent() }}
+     {% stylesheets
+         'bundles/app/plugins/bootstrap-switch/css/bootstrap-toggle.min.css'
+         filter='cssrewrite' %}
+         <!-- END GLOBAL MANDATORY STYLES -->
+         <link rel="stylesheet" href="{{ asset_url }}"/>
+     {% endstylesheets %}
+     <style type="text/css">
+         h4.page-header > a {
+             position: absolute;
+             right: 5px;
+             top: 5px;
+         }
+     </style>
+ {% endblock stylesheets %}
+
+{% block body %}
+    <div class="page-url">
+        {% for type, messages in app.session.flashBag.all %}
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    {% for message in messages %}
+                        <div class="{{ type }}">
+                            <button type="button" class="close" data-dismiss="alert"
+                                    aria-hidden="true"></button>
+                            {{ message | raw }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+
+        {% if cronTabs is defined and cronTabs %}
+            <h4 class="page-header"><i class="fa fa-files-o fa-fw"></i> Fichiers LOCK FILES
+                <a href="{{ path("app_cron_tab") }}"
+                   data-customer=""
+                   class="btn btn-run-test btn-warning btn-sm pull-right"><i
+                            class="fa fa-refresh fa-fw"></i>Refresh</a>
+            </h4>
+            <table class="table table-hover" id="">
+                <thead>
+                <tr class="active">
+                    <th class="col-sm-3">Fichiers</th>
+                    <th class="col-sm-2">État</th>
+                    <th class="col-sm-2">size</th>
+                    <th class="col-sm-2">Environnement</th>
+                    <th class="col-sm-2">Date</th>
+                    <th class="col-sm-2 text-center">Actions</th>
+                </tr>
+                </thead>
+
+                <tbody class="tbody">
+                {% for cron in cronTabs %}
+                    <tr>
+                        <td><b>{{ cron.name |capitalize }}</b></td>
+                        <td>
+                            {#{% if date(cron.lastModified) < date('-1days', 'Europe/Paris') %}#}
+                            {% if cron.state== 0 %}
+                                <span class="label label-warning">En cours</span>
+                            {% elseif cron.state== 1 %}
+                                <span class="label label-danger">Bloquer</span>
+                            {% elseif cron.state== 2 %}
+                                <span class="label label-default">Supprimer</span>
+                            {% else %}
+                            <span class="label label-default">OSEF</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ cron.size }} B</td>
+                        <td>{% if cron.prod== true %}PROD{% else %}DEV{% endif %}</td>
+                        <td>{{ cron.lastModified |date('d/m/Y H:i:s') }}</td>
+                        <td>
+                            <a href="" class="btn btn-xs btn-danger">Suppimer</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+
+        {% endif %}
+
+        {#{% for cron in cronTabs %}#}
+        <h4 class="page-header"><i class="fa fa-files-o fa-fw"></i> CronTab {#{{ cron.name }}#}
+            {#  <a href="#test_"
+                 data-customer=""
+                 class="btn btn-run-test btn-warning btn-sm pull-right"><i
+                          class="fa fa-play fa-fw"></i>Test</a>#}
+        </h4>
+        <table class="table table-hover" id="">
+            <thead>
+            <tr class="active">
+                <th class="col-sm-3">Script</th>
+                <th class="col-sm-3">Client</th>
+                <th class="col-sm-2">Date Exécution</th>
+                <th class="col-sm-2 text-center">Logs</th>
+            </tr>
+            </thead>
+            <tbody class="tbody">
+
+            </tbody>
+        </table>
+        {#{% endfor %}#}
+    </div>
+{% endblock %}
+
+    {% block javascripts %}
+        {{ parent() }}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.5/sweetalert2.all.min.js"></script>
+
+        {% javascripts
+            'bundles/app/plugins/bootstrap-switch/js/bootstrap-toggle.min.js'
+            'bundles/app/plugins/notify/bootstrap-notify.min.js'
+            'bundles/app/js/crontab.js' %}
+            <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+    {% endblock %}

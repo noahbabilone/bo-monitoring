@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Instance</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ instance.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ instance.name }}</td>
+            </tr>
+            <tr>
+                <th>Slug</th>
+                <td>{{ instance.slug }}</td>
+            </tr>
+            <tr>
+                <th>Createdate</th>
+                <td>{% if instance.createDate %}{{ instance.createDate|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Updatedate</th>
+                <td>{% if instance.updateDate %}{{ instance.updateDate|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('instance_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('instance_edit', { 'id': instance.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}
