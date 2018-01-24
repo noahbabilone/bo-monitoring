@@ -2,8 +2,8 @@ aws:
     version: latest
     region: eu-west-1
     credentials:
-        key: AKIAJUHHP5MVNPZPWYQA
-        secret: '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'
+        key: ******************
+        secret: '*********************'
 #    ec2:
 #        region: 'eu-west-1'
 #        version: '2016-11-15'
